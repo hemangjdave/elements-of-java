@@ -13,7 +13,7 @@ public class NQueensWith2DArray {
 
     public static void main(String[] args) {
         var startTime = System.nanoTime();
-        List<Position> coordinates = generateCoordinates(8);
+        List<Position> coordinates = generateCoordinates(30);
         //35 -> 15,484,813,792
         //35 -> 271,839,664,792
         //40 -> Not possible

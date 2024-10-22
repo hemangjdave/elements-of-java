@@ -1,9 +1,10 @@
 package com.techrevolution.graphs;
 
 import java.util.ArrayDeque;
+import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Queue;
 import java.util.Set;
+import java.util.stream.Stream;
 
 public class MaxAreaOfIslandRecursive {
 
@@ -11,60 +12,55 @@ public class MaxAreaOfIslandRecursive {
 
 
     public static void main(String[] args) {
-//        int[][] image = {{0, 1, 0, 0, 0}, {0, 0, 0, 0, 0}, {1, 1, 0, 1, 0}, {1, 1, 0, 1, 1}, {1, 1, 0, 1, 1}};
         int[][] image = {{0, 1, 0, 0, 0}, {0, 0, 0, 0, 0}, {1, 1, 0, 1, 0}, {1, 1, 0, 1, 1}, {1, 1, 0, 1, 1}};
-
         System.out.println(maxAreaOfIsland(image));
     }
 
     public static int maxAreaOfIsland(int[][] bluePrint) {
-        Set<IslandPos> visitedPos = new HashSet<>();
-        var maxArea = 0;
-        for (var i = 0; i < bluePrint.length; i++) {
-            for (var j = 0; j < bluePrint[0].length; j++) {
-                if (bluePrint[i][j] == 1) {
-                    var currentArea = getAreaOfIsland(bluePrint, i, j, visitedPos);
-                    if (currentArea > maxArea) maxArea = currentArea;
-                }
-            }
-        }
-        return maxArea;
+        var visitedIsland = new HashSet<IslandPos>();
+        return Stream
+                .iterate(0, integer -> integer < bluePrint.length, integer -> integer + 1)
+                .flatMap(
+                        integer -> Stream.iterate(
+                                0, integer1 -> integer1 < bluePrint[0].length, integer1 -> integer1 + 1
+                        ).filter(
+                                integer1 -> bluePrint[integer][integer1] == 1
+                                        && !visitedIsland.contains(new IslandPos(integer, integer1))
+                        ).map(value -> floodFill(bluePrint, integer, value, visitedIsland))
+                ).max(Comparator.naturalOrder())
+                .orElse(-1);
     }
 
-    private static int getAreaOfIsland(int[][] bluePrint, int row, int column, Set<IslandPos> visitedPos) {
+    private static int floodFill(int[][] image, int row, int column, Set<IslandPos> visitedIsland) {
+        var islandQueue = new ArrayDeque<IslandPos>();
         IslandPos islandPos = new IslandPos(row, column);
-        if (!visitedPos.contains(islandPos)) {
-            var defaultArea = 1;
-            Queue<IslandPos> queue = new ArrayDeque<>();
-            queue.add(islandPos);
-            while (!queue.isEmpty()) {
-                IslandPos polled = queue.poll();
-                var cRow = polled.row();
-                var cCol = polled.column();
-                for (var i = 0; i < directions.length; i++) {
-                    var currentRow = cRow + directions[i][0];
-                    var currentCol = cCol + directions[i][1];
-                    if (isValidCoordinates(bluePrint, currentRow, currentCol)) {
-                        IslandPos currentCoordinates = new IslandPos(currentRow, currentCol);
-                        if (isValidArea(bluePrint, currentRow, currentCol, visitedPos, currentCoordinates)) {
-                            defaultArea++;
-                        } else {
-                            visitedPos.add(currentCoordinates);
+        islandQueue.add(islandPos);
+        visitedIsland.add(islandPos);
+        var currentIslandArea = 1;
+        while (!islandQueue.isEmpty()) {
+            var island = islandQueue.poll();
+            var islandRow = island.row();
+            var islandColumn = island.column();
+            for (int[] direction : directions) {
+                var currentRow = islandRow + direction[0];
+                var currentColumn = islandColumn + direction[1];
+                if (isValidCoordinates(image, currentRow, currentColumn)) {
+                    IslandPos currentIsland = new IslandPos(currentRow, currentColumn);
+                    if (!visitedIsland.contains(currentIsland)) {
+                        visitedIsland.add(currentIsland);
+                        if (image[currentRow][currentColumn] == 1) {
+                            islandQueue.add(currentIsland);
+                            currentIslandArea++;
                         }
                     }
                 }
             }
-            return defaultArea;
         }
-        return 0;
+        return currentIslandArea;
     }
 
-    private static boolean isValidArea(int[][] bluePrint, int row, int column, Set<IslandPos> visitedPos, IslandPos pos) {
-        return !visitedPos.contains(pos) && bluePrint[row][column] == 1;
-    }
-
-    private static boolean isValidCoordinates(int[][] bluePrint, int row, int column) {
-        return row > -1 && row < bluePrint.length && column > -1 && column < bluePrint[0].length;
+    private static boolean isValidCoordinates(int[][] image, int row, int column) {
+        return row > -1 && row < image.length && column > -1 && column < image[row].length;
     }
 }
 

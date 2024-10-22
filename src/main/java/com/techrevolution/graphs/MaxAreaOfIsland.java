@@ -9,7 +9,7 @@ public class MaxAreaOfIsland {
     public static void main(String[] args) {
         int[][] image = {{0, 1, 0, 0, 0}, {0, 0, 0, 0, 0}, {1, 1, 0, 1, 0}, {1, 1, 0, 1, 1}, {1, 1, 0, 1, 1}};
         System.out.println(maxAreaOfIsland(image));
-
+        //6
     }
 
     private static int maxAreaOfIsland(int[][] bluePrint) {
