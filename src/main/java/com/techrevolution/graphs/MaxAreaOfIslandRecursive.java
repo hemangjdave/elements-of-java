@@ -33,7 +33,7 @@ public class MaxAreaOfIslandRecursive {
 
     private static int floodFill(int[][] image, int row, int column, Set<IslandPos> visitedIsland) {
         var islandQueue = new ArrayDeque<IslandPos>();
-        IslandPos islandPos = new IslandPos(row, column);
+        var islandPos = new IslandPos(row, column);
         islandQueue.add(islandPos);
         visitedIsland.add(islandPos);
         var currentIslandArea = 1;
@@ -45,7 +45,7 @@ public class MaxAreaOfIslandRecursive {
                 var currentRow = islandRow + direction[0];
                 var currentColumn = islandColumn + direction[1];
                 if (isValidCoordinates(image, currentRow, currentColumn)) {
-                    IslandPos currentIsland = new IslandPos(currentRow, currentColumn);
+                    var currentIsland = new IslandPos(currentRow, currentColumn);
                     if (!visitedIsland.contains(currentIsland)) {
                         visitedIsland.add(currentIsland);
                         if (image[currentRow][currentColumn] == 1) {
@@ -65,5 +65,4 @@ public class MaxAreaOfIslandRecursive {
 }
 
 record IslandPos(int row, int column) {
-
 }

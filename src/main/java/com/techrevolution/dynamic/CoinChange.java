@@ -1,11 +1,11 @@
 package com.techrevolution.dynamic;
 
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.LinkedList;
 
 public class CoinChange {
     public static void main(String[] args) {
+        System.out.println(new CoinChange().coinChange(new int[]{3, 4, 5}, 31));//7
         System.out.println(new CoinChange().coinChange(new int[]{1, 2, 5}, 11));//3
         System.out.println(new CoinChange().coinChange(new int[]{1, 2, 5}, 6)); //2
         System.out.println(new CoinChange().coinChange(new int[]{1, 3, 5}, 8)); //2
@@ -16,24 +16,31 @@ public class CoinChange {
 
     // [1,2,5] , 11 --> 3(ans) --> 5+5+1
     public int coinChange(int[] coins, int amount) {
-        Map<Integer, Integer> collect = Arrays.stream(coins)
-                .boxed()
-                .collect(
-                        Collectors.toMap(Function.identity(), integer -> 1)
-                );
-        List<Integer> possibilities = new ArrayList<>();
-        for (int key : collect.keySet()) {
-            var quotient = amount / key;
-            var reminder = amount % key;
-            if (reminder == 0) {
-                possibilities.add(quotient);
-            } else {
-                if (collect.get(reminder) != null) {
-                    possibilities.add(quotient + reminder);
+        if (amount == 0) return amount;
+        if (coins.length == 0) return -1;
+        var deque = new LinkedList<Integer>();
+        var visitedCoin = new HashSet<Integer>();
+        deque.add(amount);
+        visitedCoin.add(amount);
+        var lastAdded = deque.peekLast();
+        var minCoin = 1;
+        while (!deque.isEmpty()) {
+            var current = deque.pollFirst();
+            for (int coin : coins) {
+                var remaining = current - coin;
+                if (remaining == 0) {
+                    return minCoin;
+                }
+                if (!visitedCoin.contains(remaining) && remaining > 0) {
+                    deque.add(remaining);
+                    visitedCoin.add(remaining);
                 }
             }
+            if (current.equals(lastAdded)) {
+                minCoin++;
+                lastAdded = deque.peekLast();
+            }
         }
-        return possibilities.isEmpty() ? -1 : possibilities.stream().min(Comparator.naturalOrder()).orElse(-1);
-
+        return -1;
     }
 }
