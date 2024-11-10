@@ -1,9 +1,6 @@
 package com.techrevolution.tree;
 
-import java.util.ArrayDeque;
-import java.util.Queue;
-
-public class InvertBinaryTree {
+public class InvertBinaryTreeRecursive {
     public static void main(String[] args) {
         var startTime = System.nanoTime();
         BinaryTree tree = new BinaryTree();
@@ -25,33 +22,18 @@ public class InvertBinaryTree {
         Node normalTree = invertTree(invertTree);
         tree.printBinaryTree(normalTree);
         var endTime = System.nanoTime();
-        System.out.println("Time taken: " + (endTime - startTime) + " nanoseconds");
-        //4144958 , 3587167 , 4332000
+        System.out.println("Execution time: " + (endTime - startTime) + " nanoseconds");
+        //414,4958 , 3,587,167 , 4,332,000
+        //4,373,250 , 3,381,167 , 4,821,750
     }
 
     public static Node invertTree(Node rootNode) {
-        if (rootNode == null) {
-            return null;
-        }
-        Queue<Node> nodes = new ArrayDeque<>();
-        nodes.add(rootNode);
-        while (!nodes.isEmpty()) {
-            Node poll = nodes.poll();
-            Node left = poll.getLeft();
-            Node right = poll.getRight();
-            if (left != null) {
-                nodes.add(left);
-            }
-            if (right != null) {
-                nodes.add(right);
-            }
-            swapNodes(poll, left, right);
-        }
+        if (rootNode == null) return null;
+        Node tempLeft = rootNode.getLeft();
+        rootNode.setLeft(rootNode.getRight());
+        rootNode.setRight(tempLeft);
+        invertTree(rootNode.getLeft());
+        invertTree(rootNode.getRight());
         return rootNode;
-    }
-
-    private static void swapNodes(Node rootNode, Node left, Node right) {
-        rootNode.setLeft(right);
-        rootNode.setRight(left);
     }
 }

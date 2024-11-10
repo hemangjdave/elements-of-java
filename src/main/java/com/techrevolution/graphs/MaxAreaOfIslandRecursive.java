@@ -12,8 +12,17 @@ public class MaxAreaOfIslandRecursive {
 
 
     public static void main(String[] args) {
+        var startTime = System.nanoTime();
         int[][] image = {{0, 1, 0, 0, 0}, {0, 0, 0, 0, 0}, {1, 1, 0, 1, 0}, {1, 1, 0, 1, 1}, {1, 1, 0, 1, 1}};
         System.out.println(maxAreaOfIsland(image));
+        int[][] image2 = {{0, 1, 0, 0, 0}, {0, 1, 1, 0, 0}, {1, 1, 0, 1, 0}, {1, 1, 0, 1, 1}, {1, 1, 0, 1, 1}};
+        System.out.println(maxAreaOfIsland(image2));
+        int[][] image3 = {{0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}, {0, 0, 0, 1, 1}, {0, 0, 0, 1, 1}};
+        System.out.println(maxAreaOfIsland(image3));
+        var endTime = System.nanoTime();
+        System.out.println("Execution time in milliseconds: " + (endTime - startTime));
+        //18,882,583 , 21587459 , 17158583
+        //21,453,750 , 22,602,083 , 20,447,041
     }
 
     public static int maxAreaOfIsland(int[][] bluePrint) {

@@ -24,7 +24,7 @@ public class PowerSetGenerator {
 
     private static void bfs(List<List<Integer>> result, Deque<List<Integer>> deque, List<Integer> input, int index) {
         while (!deque.isEmpty()) {
-            List<Integer> polled = deque.poll();
+            var polled = deque.poll();
             for (var i = index + 1; i < input.size(); i++) {
                 var currentList = new ArrayList<>(polled);
                 currentList.add(input.get(i));
