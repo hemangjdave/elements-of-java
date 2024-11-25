@@ -11,7 +11,6 @@ public class LastStoneWeight {
         System.out.println(lastStoneWeight(new int[]{2, 7, 4, 1, 8, 1}));
         System.out.println(lastStoneWeight(new int[]{2, 2}));
 
-
         System.out.println("-------recursively-------------");
         System.out.println(lastStoneWeightRecursive(new int[]{2, 7, 4, 1, 8, 1}));
         System.out.println(lastStoneWeightRecursive(new int[]{2, 2}));

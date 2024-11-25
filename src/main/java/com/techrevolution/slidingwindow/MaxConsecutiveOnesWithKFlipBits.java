@@ -22,16 +22,6 @@ public class MaxConsecutiveOnesWithKFlipBits {
 
     }
 
-    public static int findMaxConsecutiveOnesRecursively(int[] A, int K) {
-        return -1;
-    }
-
-    private static int dfs(int[] nums, int k, int index, int currentOnes) {
-        if (nums[index] == 1) currentOnes++;
-        if (nums[index] == 0 && k > 0) currentOnes++;
-        return -1;
-    }
-
     public static int findMaxConsecutiveOnesWithDP(int[] nums, int k) {
         var currentOnes = 0;
         var maxOnes = 0;

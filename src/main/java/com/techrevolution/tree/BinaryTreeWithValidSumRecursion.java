@@ -11,7 +11,7 @@ public class BinaryTreeWithValidSumRecursion {
         System.out.println(hasValidSum(rootNode, 22)); // true
         System.out.println(hasValidSum(rootNode, 23)); // false
         System.out.println(hasValidSum(rootNode, 33)); // false
-        System.out.println("----------------SECOND SCENARIO-----------------------");
+        System.out.println("----------------SECOND SCENARIO WITH RECURSION-----------------------");
         BinaryTree tree2 = new BinaryTree();
         tree2.addToTree(1);
         tree2.addToTree(2);
